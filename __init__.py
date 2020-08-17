@@ -1,1 +1,2 @@
-from Trading212.api import Trading212
+from Trading212.api import CFD, Invest
+from Trading212.utils import Panel
