@@ -69,11 +69,16 @@ class Trading212:
         self.driver.find_element_by_id("username-real").send_keys(username)
         self.driver.find_element_by_id("pass-real").send_keys(password)
         # Login
-        self.driver.find_element_by_class_name("button-login").click()
-        # Waiting and opening the user menu to avoid the 'You're using CFD' message.
-        elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='custom-button ']")))
-        force_click(elem)
+        WebDriverWait(self.driver, self.timeout/2).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "button-login"))).click()
 
+        # Clicking on the button of the "YOUR ACCOUNT IS APPROVED!"
+        try:
+            elem = WebDriverWait(self.driver, self.timeout/2).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='custom-button ']")))
+            force_click(elem)
+        except:
+            pass
+
+        # Waiting and opening the user menu to avoid the 'You're using CFD' message.
         elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "account-menu-button")))
         force_click(elem)
         # Switching panel if needed
@@ -123,6 +128,7 @@ class Trading212:
         :param stock: Stock (Display name)
         """
         # It may be one of two elements
+        WebDriverWait(self.driver, self.timeout/2).until(expected_conditions.visibility_of_any_elements_located((By.XPATH, "//span[contains(@data-dojo-attach-event, 'onOpenDialogClick')]")))
         elem = self.driver.find_elements_by_xpath("//span[contains(@data-dojo-attach-event, 'onOpenDialogClick')]")
         try:
             elem[0].click()
