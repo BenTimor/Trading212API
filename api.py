@@ -20,9 +20,9 @@ class Trading212:
         if headless:
             options = webdriver.FirefoxOptions()
             options.headless = True
-            self.driver = webdriver.Firefox(firefox_options=options)
+            self.driver: webdriver.Firefox = webdriver.Firefox(firefox_options=options)
         else:
-            self.driver = webdriver.Firefox()
+            self.driver: webdriver.Firefox = webdriver.Firefox()
 
         self.driver.get("https://www.trading212.com/en/login")  # Getting a website
         self.setup(username, password, panel)
@@ -71,6 +71,9 @@ class Trading212:
         # Login
         self.driver.find_element_by_class_name("button-login").click()
         # Waiting and opening the user menu to avoid the 'You're using CFD' message.
+        elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='custom-button ']")))
+        force_click(elem)
+
         elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "account-menu-button")))
         force_click(elem)
         # Switching panel if needed
@@ -155,6 +158,9 @@ class Trading212:
         return self.driver.find_elements_by_xpath(
             f"//td[@class='name' and text()='{stock}']/following::td[contains(@class,'{info}')]"
         )[0].text
+    
+    def close(self):
+        self.driver.close()
 
 class Invest(Trading212):
     """
