@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from time import sleep
 
-from Trading212.utils import force_click, Panel, type_sleep, script_click_xpath, Mode
+from .utils import force_click, Panel, type_sleep, script_click_xpath, Mode
 
 class Trading212:
     """
