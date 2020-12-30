@@ -1,2 +1,2 @@
 from .api import CFD, Invest
-from .utils import Panel
+from .utils import BuyStockMethod, Panel

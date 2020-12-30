@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 
-from .utils import Mode, Panel, force_click, script_click_xpath, type_sleep
+from .utils import *
 
 
 class Trading212:
@@ -93,14 +93,15 @@ class Trading212:
         elem = self.driver.find_element_by_class_name("account-menu-button")
         elem.click()
 
-    def buy_stock(self, stock, amount):
+    def buy_stock(self, stock, amount, method=BuyStockMethod.Shares):
         """
         Buying a stock
         :param stock: Stock (Display name)
         :param amount: It may be the amount of the shares and it may be the value of the money. It depends on your Trading212 defaults and I may fix it in the future. For now, You can debug it with headless=False parameter in the constructor.
+        :param method: Shares - For buying the stock by its shares amount | Value - For buying the stock by its value
         """
-        # It's just opening a stock and buying it
         self.open_stock_dialog(stock)
+        self.switch_buying_method(method)
         self.buy(amount)
         sleep(self.long_sleep)
 
@@ -123,6 +124,17 @@ class Trading212:
                 expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='custom-button send-order-button']"))).click()
         else:
             self.driver.find_elements_by_xpath("//div[contains(@class,'confirm-button')]")[0].click()
+
+    def switch_buying_method(self, method):
+        if self.mode == Mode.Invest:
+            force_click(WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='invest-by-content']"))))
+            if method == BuyStockMethod.Value:
+                # item item-invest-by-items-value
+                # item item-invest-by-items-quantity
+                self.driver.find_element_by_xpath("//div[@class='item item-invest-by-items-value']").click()
+            else:
+                self.driver.find_element_by_xpath("//div[@class='item item-invest-by-items-quantity']").click()
+
 
     def open_stock_dialog(self, stock):
         """
@@ -194,6 +206,7 @@ class Invest(Trading212):
         # God knows why selenium can't click it. So I'm using javascript hacks.
         quantity = self.position_info(stock, "quantity")
         script_click_xpath(self.driver, f"//td[@class='name' and text()='{stock}']/following::div[@class='button-wrapper']/child::div[@class='sell-button']")
+        self.switch_buying_method(BuyStockMethod.Shares)
         elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.visibility_of_element_located((By.XPATH,"//div[@class='visible-input']//input")))
         elem.clear()
         type_sleep(elem, quantity, self.short_sleep)

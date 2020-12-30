@@ -1,5 +1,6 @@
 from time import sleep
 
+
 class Panel:
     """
     Allows you to select between practice and real
@@ -10,6 +11,10 @@ class Panel:
 class Mode:
     Invest = "Invest"
     CFD = "CFD"
+
+class BuyStockMethod:
+    Shares = "Shares"
+    Value = "Value"
 
 def force_click(element, sleep_time=1):
     """
