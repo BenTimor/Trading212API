@@ -1,10 +1,12 @@
-from selenium import webdriver
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.common.by import By
 from time import sleep
 
-from .utils import force_click, Panel, type_sleep, script_click_xpath, Mode
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.wait import WebDriverWait
+
+from .utils import Mode, Panel, force_click, script_click_xpath, type_sleep
+
 
 class Trading212:
     """
@@ -95,7 +97,7 @@ class Trading212:
         """
         Buying a stock
         :param stock: Stock (Display name)
-        :param amount: Amount
+        :param amount: It may be the amount of the shares and it may be the value of the money. It depends on your Trading212 defaults and I may fix it in the future. For now, You can debug it with headless=False parameter in the constructor.
         """
         # It's just opening a stock and buying it
         self.open_stock_dialog(stock)
@@ -108,7 +110,7 @@ class Trading212:
         :param amount: Amount
         """
         # Finding amount input
-        elem = self.driver.find_elements_by_xpath("//div[@class='visible-input']//input[contains(@id, 'uniqName')]")[0]
+        elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.visibility_of_element_located((By.XPATH, "//div[@class='visible-input']//input[contains(@id, 'uniqName')]")))
         elem.clear()
         # Entering keys slowly because Trading212 removes it if it's written too fast
         type_sleep(elem, str(amount), self.short_sleep)
