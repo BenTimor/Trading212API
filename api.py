@@ -71,7 +71,7 @@ class Trading212:
         self.driver.find_element_by_id("username-real").send_keys(username)
         self.driver.find_element_by_id("pass-real").send_keys(password)
         # Login
-        WebDriverWait(self.driver, self.timeout/2).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "button-login"))).click()
+        force_click(WebDriverWait(self.driver, self.timeout/2).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "button-login"))))
 
         # Clicking on the button of the "YOUR ACCOUNT IS APPROVED!"
         try:
