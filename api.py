@@ -80,6 +80,16 @@ class Trading212:
         except:
             pass
 
+        # Navigate to the old app if the new app is opened by default
+        try:
+            elem = WebDriverWait(self.driver, self.timeout / 2).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='account-menu-header']")))
+            force_click(elem)
+            
+            elem = WebDriverWait(self.driver, self.timeout / 2).until(expected_conditions.element_to_be_clickable((By.XPATH, "//div[@class='account-menu-item switch-to-old']")))
+            force_click(elem)
+        except:
+            pass
+
         # Waiting and opening the user menu to avoid the 'You're using CFD' message.
         elem = WebDriverWait(self.driver, self.timeout).until(expected_conditions.element_to_be_clickable((By.CLASS_NAME, "account-menu-button")))
         force_click(elem)
