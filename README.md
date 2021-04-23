@@ -4,7 +4,7 @@ This is an **unofficial** selenium based API for 'Trading212' broker.
 
 Additionally, Note the Trading212 ['Robo Trading' agreement](https://www.trading212.com/en/robo-trading-agreement).
 
-The API is still WIP, I don't know if and how it's going to work on your computer. But you're more than welcome ot open and issue and I'll try to help as much as I can.
+The API is still WIP, I don't know if and how it's going to work on your computer. But you're more than welcome to open and issue and I'll try to help as much as I can.
 
 ## Requirements
 - Python 3.x
