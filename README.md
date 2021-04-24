@@ -1,4 +1,7 @@
 # Trading212 API
+
+### Right now the API is not always working properly. I don't have enough time to fix it, But everyone is more than welcome to contribute and I'll check all of the PRs.
+
 This is an **unofficial** selenium based API for 'Trading212' broker. 
 **Neither me and neither Trading212 are responsible for the API, You are responsible for your actions and for using the API.**
 
